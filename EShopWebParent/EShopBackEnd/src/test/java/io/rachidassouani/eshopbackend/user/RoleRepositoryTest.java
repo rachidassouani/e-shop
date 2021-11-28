@@ -1,4 +1,4 @@
-package io.rachidassouani.eshopbackend.role;
+package io.rachidassouani.eshopbackend.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 
+import io.rachidassouani.eshopbackend.user.RoleRepository;
 import io.rachidassouani.eshopcommon.model.Role;
 
 @DataJpaTest
