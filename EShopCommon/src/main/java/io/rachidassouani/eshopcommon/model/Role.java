@@ -64,4 +64,12 @@ public class Role {
 		this.description = description;
 	}
 
+	/*
+	 * toString Method
+	 */
+	
+	@Override
+	public String toString() {
+		return "Role [id=" + id + ", name=" + name + ", description=" + description + "]";
+	}	
 }

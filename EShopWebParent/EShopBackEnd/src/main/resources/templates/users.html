@@ -58,11 +58,16 @@
 			</div>
 			
 			<div>
-				<h2>Manage Users</h2>
-				
+				<h3>Manage Users</h3>
+				<a th:href="@{/users/new}">Create New User</a>
 			</div>
 			
-			
+			<div th:if="${successMessage != null}" class="alert alert-success txet-center">
+				[[${successMessage}]]
+			</div>
+			<div th:if="${errorMessage != null}" class="alert alert-danger txet-center">
+				[[${errorMessage}]]
+			</div>
 			<div>
 				<table class="table table-bordered table-striped table-hover table-responsive-xl">
 					<thead class="">
@@ -78,7 +83,7 @@
 					</thead>
 					<tbody>
 						
-						<tr th:each="user : ${listUsers}">
+						<tr th:each="user : ${users}">
 							<td>[[${user.photo}]]</td>
 							<td>[[${user.firstName}]]</td>
 							<td>[[${user.lastName}]]</td>

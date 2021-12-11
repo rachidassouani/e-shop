@@ -21,7 +21,7 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
-	@Column(length = 150, nullable = false, unique = true)
+	@Column(length = 100, nullable = false, unique = true)
 	private String email;
 
 	@Column(length = 64, nullable = false)
@@ -127,4 +127,15 @@ public class User {
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
+
+	/*
+	 * to string method
+	 */
+	
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", email=" + email + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", photo=" + photo + ", enabled=" + enabled + ", roles=" + roles + "]";
+	}
+	
 }
