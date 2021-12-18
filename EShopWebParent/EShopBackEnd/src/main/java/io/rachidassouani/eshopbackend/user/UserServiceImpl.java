@@ -51,4 +51,11 @@ public class UserServiceImpl implements UserService {
 	private String encodePassword(String password) {
 		return passwordEncoder.encode(password);
 	}
+
+	@Override
+	public boolean isEmailUnique(String email) {
+		User user = userRepository.findUserByEmail(email);
+		return user == null;
+		
+	}
 }

@@ -12,4 +12,6 @@ public interface UserService {
 	List<Role> findAllRoles();
 	
 	boolean saveUser(User user);
+	
+	boolean isEmailUnique(String email);
 }

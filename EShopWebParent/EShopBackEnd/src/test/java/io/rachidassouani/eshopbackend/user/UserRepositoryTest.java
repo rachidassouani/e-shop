@@ -54,8 +54,7 @@ public class UserRepositoryTest {
 		user.getRoles().add(assistantRole);
 		
 		userRepository.save(user);
-		
-		
+			
 		assertThat(userRepository.findAll().size()).isEqualTo(1);
 	}
 }

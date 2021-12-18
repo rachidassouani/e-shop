@@ -61,9 +61,10 @@
 				<h3>Manage Users | Create New User</h3>
 			</div>
 			
-			<form   th:action="@{/users/save}" 
+			<form   th:action="@{/users/save}"
 					method="post" 
 					th:object="${user}"
+					onsubmit="return checkEmailUnique(this)"
 					style="max-width:700px; margin: 0 auto">
 				<div class="border rounded p-3 mb-3">
 					<div class="form-group row">
@@ -125,7 +126,22 @@
 			</form>
 			
 		</div>
-		
+		<div class="modal fade" id="modalDialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title" id="modalTitle" ></h4>
+						<button class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body">
+						<span id="modalBody"></span>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
 		<footer>
 			<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
 			<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
@@ -135,8 +151,41 @@
 			$(document).ready(function() {
 				$("#buttonCancel").on("click", function() {
 					window.location = "[[@{/users}]]";
-				})
-			})
+				});
+			});
+			
+			function checkEmailUnique(form) {
+				url = "[[@{/users/checkEmail}]]";
+				userEmail = $("#email").val();
+				csrfVal = $("input[name='_csrf']").val();
+				params = {email: userEmail, _csrf: csrfVal};
+		
+				
+				// sending post method
+				$.post(url, params, function(res) {
+					if (res === "OK") {
+						form.submit();
+					} else if (res === "Duplicated") {
+						// if server response is equals to duplicated
+						showMessageDialog("Warning", "this email " + userEmail +" is already taken");
+					} else {
+						showMessageDialog("Error", "Unknown response from the server");
+					}
+					
+				}).fail(function(){
+					showMessageDialog("Error", "Could not connect to the server");
+				});
+				return false;
+			}
+			
+			function showMessageDialog(title, message) {
+				$("#modalTitle").text(title);
+				$("#modalBody").text(message);
+				$("#modalDialog").modal();
+			}
+			
+			
+			
 		</script>
 		
 	</body>
