@@ -6,6 +6,7 @@
 	
 	<title>Home - eSHop Admin</title>
 	<link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+	<link rel="stylesheet" th:href="@{/fontawesome/css/all.css}">
 
 </head>
 	<body>
@@ -84,13 +85,20 @@
 					<tbody>
 						
 						<tr th:each="user : ${users}">
-							<td>[[${user.photo}]]</td>
+							<td class="text-center"><span class="far fa-user"></span></td>
 							<td>[[${user.firstName}]]</td>
 							<td>[[${user.lastName}]]</td>
 							<td>[[${user.email}]]</td>
 							<td>--</td>
-							<td>[[${user.enabled}]]</td>
-							<td>Edit &nbsp; Delete</td>
+							<td class="text-center">
+								<a th:if="${user.enabled == true}" href="" class="fas fa-check" style="color: green;"></a>
+								<a th:if="${user.enabled == false}" href="" class="fas fa-times" style="color: red;"></a>
+							</td>
+							<td class="text-center">
+								<a href="" class="fas fa-user-edit" style="color: green"></a> 
+								&nbsp; 
+								<a href="" class="fas fa-trash" style="color: red"></a>
+							</td>
 						</tr>
 					</tbody>
 				</table>
