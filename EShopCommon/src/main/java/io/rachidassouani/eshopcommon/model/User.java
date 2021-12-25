@@ -20,6 +20,9 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
+	
+	@Column(length = 100, nullable = false, unique = true)
+	private String code;
 
 	@Column(length = 100, nullable = false, unique = true)
 	private String email;
