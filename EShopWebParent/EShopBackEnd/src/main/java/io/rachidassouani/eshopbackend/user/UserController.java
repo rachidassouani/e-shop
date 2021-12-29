@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -37,6 +38,9 @@ public class UserController {
 		user.setEnabled(true);
 		List<Role> roles = userService.findAllRoles();
 		model.addAttribute("roles", roles);
+		
+		model.addAttribute("pageTitle", "Create new user");
+		
 		return "userForm";
 	}
 	
@@ -49,9 +53,30 @@ public class UserController {
 			redirectAttributes.addFlashAttribute("successMessage", "The user has been saved successfully");
 		} else {
 			redirectAttributes.addFlashAttribute("errorMessage", "The user has NOT been saved");
-		}
-		
-		
+		}	
 		return "redirect:/users";
 	}
+	
+	@GetMapping("/users/edit/{code}")
+	public String editUser(@PathVariable("code") String code, Model model, 
+			RedirectAttributes redirectAttributes) {
+		
+		try {
+			model.addAttribute("pageTitle", "Update existing User (CODE: "+code+")");
+			
+			User user = userService.findUserByCode(code);
+			List<Role> roles = userService.findAllRoles();
+			
+			model.addAttribute("user", user);
+			model.addAttribute("roles", roles);
+			
+			return "userForm";
+		} catch (UserNotFoundException e) {
+			e.printStackTrace();
+			redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+			
+		}
+		return "redirect:/users";
+	}
+	
 }

@@ -95,7 +95,7 @@
 								<a th:if="${user.enabled == false}" href="" class="fas fa-times" style="color: red;"></a>
 							</td>
 							<td class="text-center">
-								<a href="" class="fas fa-user-edit" style="color: green"></a> 
+								<a th:href="@{'/users/edit/' + ${user.code}}" title="Edit this user" class="fas fa-user-edit" style="color: green"></a> 
 								&nbsp; 
 								<a href="" class="fas fa-trash" style="color: red"></a>
 							</td>

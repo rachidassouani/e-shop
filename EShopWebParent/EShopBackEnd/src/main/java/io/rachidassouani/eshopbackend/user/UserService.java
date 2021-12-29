@@ -13,5 +13,7 @@ public interface UserService {
 	
 	boolean saveUser(User user);
 	
-	boolean isEmailUnique(String email);
+	boolean isEmailUnique(Integer id, String email);
+
+	User findUserByCode(String code) throws UserNotFoundException;
 }

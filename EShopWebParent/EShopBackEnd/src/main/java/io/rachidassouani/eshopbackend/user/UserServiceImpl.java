@@ -1,11 +1,15 @@
 package io.rachidassouani.eshopbackend.user;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import io.rachidassouani.eshopbackend.util.Constant;
+import io.rachidassouani.eshopbackend.util.RandomCodeService;
 import io.rachidassouani.eshopcommon.model.Role;
 import io.rachidassouani.eshopcommon.model.User;
 
@@ -34,10 +38,25 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean saveUser(User user) {
 		try {
-			final String password = user.getPassword();
-			final String encodedPassword = encodePassword(password);
 			
-			user.setPassword(encodedPassword);
+			// case of updating existing user
+			if (user.getId() != null) {
+				User existingUser = userRepository.findById(user.getId()).get();
+				if (user.getPassword().isEmpty()) {	
+					user.setPassword(existingUser.getPassword());	
+				} else {	
+					encodeUserPassword(user);
+				}
+				user.setCode(existingUser.getCode());
+				
+			// case of adding new user
+			} else {
+				user.setCode(RandomCodeService.generatCode());
+				encodeUserPassword(user);
+			}
+			
+			
+			
 			
 			// saving user
 			userRepository.save(user);
@@ -48,14 +67,47 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
-	private String encodePassword(String password) {
-		return passwordEncoder.encode(password);
+	@Override
+	public boolean isEmailUnique(Integer id, String email) {
+		User user = userRepository.findUserByEmail(email);
+		
+		if (user == null) return true;
+		
+		boolean creatingNewUser = (id == null);
+		
+		if (creatingNewUser) {
+			if (user != null) {
+				return false;
+			}
+		} else {
+			if (user.getId() != id) {
+				return false;
+			}
+		}
+		return true;
+		
 	}
 
 	@Override
-	public boolean isEmailUnique(String email) {
-		User user = userRepository.findUserByEmail(email);
-		return user == null;
+	public User findUserByCode(String code) throws UserNotFoundException {	
+		try {
+			User user =  userRepository.findUserByCode(code);
+			if (user == null)
+				throw new NoSuchElementException();
+			return user;
+		} catch (NoSuchElementException ex) {
+			throw new UserNotFoundException(Constant.USER_NOT_FOUND);
+		}
+	}
+	
+	private void encodeUserPassword(User user) {
+		final String password = user.getPassword();
+		final String encodedPassword = encodePassword(password);
 		
+		user.setPassword(encodedPassword);
+	}
+	
+	private String encodePassword(String password) {
+		return passwordEncoder.encode(password);
 	}
 }

@@ -9,4 +9,6 @@ import io.rachidassouani.eshopcommon.model.User;
 public interface UserRepository extends JpaRepository<User, Integer> {
 
 	User findUserByEmail(String email);
+
+	User findUserByCode(String code);
 }
