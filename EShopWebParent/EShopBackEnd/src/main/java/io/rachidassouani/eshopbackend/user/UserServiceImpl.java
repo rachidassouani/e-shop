@@ -3,10 +3,10 @@ package io.rachidassouani.eshopbackend.user;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import io.rachidassouani.eshopbackend.util.Constant;
 import io.rachidassouani.eshopbackend.util.RandomCodeService;
@@ -14,6 +14,7 @@ import io.rachidassouani.eshopcommon.model.Role;
 import io.rachidassouani.eshopcommon.model.User;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
 	@Autowired
@@ -120,5 +121,14 @@ public class UserServiceImpl implements UserService {
 		}
 		userRepository.delete(foundedUser);
 		
+	}
+
+	@Override
+	public void updateUserStatus(String code, boolean status) throws UserNotFoundException {
+		User userToUpdate = userRepository.findUserByCode(code);
+		if (userToUpdate == null) {
+			throw new UserNotFoundException(Constant.USER_NOT_FOUND);
+		}
+		userRepository.updateUserStatus(code, status);
 	}
 }

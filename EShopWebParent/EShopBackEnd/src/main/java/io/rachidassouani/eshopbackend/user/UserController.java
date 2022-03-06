@@ -85,12 +85,48 @@ public class UserController {
 		
 		try {
 			
-			model.addAttribute("pageTitle", "delete existing User (CODE: "+code+")");
-			
 			userService.deleteUserByCode(code);
 			
 			redirectAttributes.addFlashAttribute("successMessage", "THe user code " + code
 					+" has been deleted succefully");
+			
+		} catch (UserNotFoundException e) {
+			e.printStackTrace();
+			redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+			
+		}
+		return "redirect:/users";
+	}
+	
+	@GetMapping("/users/{code}/activate-user")
+	public String activateUser(@PathVariable("code") String code, Model model, 
+			RedirectAttributes redirectAttributes) {
+		
+		try {
+			
+			userService.updateUserStatus(code, true);
+			
+			redirectAttributes.addFlashAttribute("successMessage", "The user code " + code
+					+" has been activated succefully");
+			
+		} catch (UserNotFoundException e) {
+			e.printStackTrace();
+			redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+			
+		}
+		return "redirect:/users";
+	}
+	
+	@GetMapping("/users/{code}/deactivate-user")
+	public String deActivateUser(@PathVariable("code") String code, Model model, 
+			RedirectAttributes redirectAttributes) {
+		
+		try {
+			
+			userService.updateUserStatus(code, false);
+			
+			redirectAttributes.addFlashAttribute("successMessage", "The user code " + code
+					+" has been deactivated succefully");
 			
 		} catch (UserNotFoundException e) {
 			e.printStackTrace();

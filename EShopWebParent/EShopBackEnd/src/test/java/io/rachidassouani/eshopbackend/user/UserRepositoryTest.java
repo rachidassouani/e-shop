@@ -67,13 +67,28 @@ public class UserRepositoryTest {
 		assertThat(foundedUser).isNotNull();
 	}
 	
+	@Test
+	public void testDeactivateUser() {
+		createUser();
+		
+		userRepository.updateUserStatus("123GHKJHF", false);
+		
+	}
+	
+	@Test
+	public void testActivateUser() {
+		createUser();
+		
+		userRepository.updateUserStatus("123GHKJHF", true);
+		
+	}
+	
 	
 	private void createUser() {
 		
 		Role adminRole = testEntityManager.find(Role.class, 1);
 		
-		User user = new User("123GHKJHF", "rachid3@gmail.com", "pass", "rachid", "assouani", false);
-		user.setId(33);
+		User user = new User("123GHKJHF", "rachvid3@gmail.com", "pass", "rachid", "assouani", true);
 		user.getRoles().add(adminRole);
 		
 		userRepository.save(user);

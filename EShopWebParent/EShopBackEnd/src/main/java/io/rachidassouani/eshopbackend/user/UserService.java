@@ -18,4 +18,6 @@ public interface UserService {
 	User findUserByCode(String code) throws UserNotFoundException;
 	
 	void deleteUserByCode(String code) throws UserNotFoundException;
+	
+	void updateUserStatus(String code, boolean status) throws UserNotFoundException;
 }

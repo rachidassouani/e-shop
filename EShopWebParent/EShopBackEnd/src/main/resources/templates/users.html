@@ -91,8 +91,8 @@
 							<td>[[${user.email}]]</td>
 							<td>--</td>
 							<td class="text-center">
-								<a th:if="${user.enabled == true}" href="" class="fas fa-check" style="color: green;"></a>
-								<a th:if="${user.enabled == false}" href="" class="fas fa-times" style="color: red;"></a>
+								<a th:if="${user.enabled == true}" th:href="@{'/users/' + ${user.code} + '/deactivate-user'}" title="Deactivate this user" class="fas fa-check" style="color: green;"></a>
+								<a th:if="${user.enabled == false}" th:href="@{'/users/' + ${user.code} + '/activate-user'}" title="Activate this user" class="fas fa-times" style="color: red;"></a>
 							</td>
 							<td class="text-center">
 								<a th:href="@{'/users/edit/' + ${user.code}}" title="Edit this user" class="fas fa-user-edit" style="color: green"></a> 
