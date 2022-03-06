@@ -16,4 +16,6 @@ public interface UserService {
 	boolean isEmailUnique(Integer id, String email);
 
 	User findUserByCode(String code) throws UserNotFoundException;
+	
+	void deleteUserByCode(String code) throws UserNotFoundException;
 }

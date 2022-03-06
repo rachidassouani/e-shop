@@ -110,4 +110,15 @@ public class UserServiceImpl implements UserService {
 	private String encodePassword(String password) {
 		return passwordEncoder.encode(password);
 	}
+
+	@Override
+	public void deleteUserByCode(String code) throws UserNotFoundException {
+		User foundedUser = userRepository.findUserByCode(code);
+		
+		if (foundedUser == null) {
+			throw new UserNotFoundException(Constant.USER_NOT_FOUND);
+		}
+		userRepository.delete(foundedUser);
+		
+	}
 }

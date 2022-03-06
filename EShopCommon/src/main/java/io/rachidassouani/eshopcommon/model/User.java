@@ -54,8 +54,9 @@ public class User {
 		super();
 	}
 
-	public User(String email, String password, String firstName, String lastName, boolean enabled) {
+	public User(String code, String email, String password, String firstName, String lastName, boolean enabled) {
 		super();
+		this.code = code;
 		this.email = email;
 		this.password = password;
 		this.firstName = firstName;

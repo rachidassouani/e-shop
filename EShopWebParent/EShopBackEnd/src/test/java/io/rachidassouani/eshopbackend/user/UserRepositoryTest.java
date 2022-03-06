@@ -35,7 +35,7 @@ public class UserRepositoryTest {
 	public void testCreatedUser() {
 		Role adminRole = testEntityManager.find(Role.class, 1);
 		
-		User user = new User("rachid@gmail.com", "pass", "rachid", "assouani", false);
+		User user = new User("123GHKJHF", "rachid@gmail.com", "pass", "rachid", "assouani", false);
 		user.getRoles().add(adminRole);
 		
 		userRepository.save(user);
@@ -48,7 +48,7 @@ public class UserRepositoryTest {
 		Role shipperRole = testEntityManager.find(Role.class, 4);
 		Role assistantRole = testEntityManager.find(Role.class, 5);
 		
-		User user = new User("shipper-assistant@gmail.com", "pass", "shipper-assistant-rachid",
+		User user = new User("HKJD46456", "shipper-assistant@gmail.com", "pass", "shipper-assistant-rachid",
 				"shipper-assistant-assouani", false);
 		user.getRoles().add(shipperRole);
 		user.getRoles().add(assistantRole);
@@ -56,5 +56,26 @@ public class UserRepositoryTest {
 		userRepository.save(user);
 			
 		assertThat(userRepository.findAll().size()).isEqualTo(1);
+	}
+	
+	@Test
+	public void testFindUserByCode() {
+		createUser();
+		
+		User foundedUser = userRepository.findUserByCode("123GHKJHF");
+		
+		assertThat(foundedUser).isNotNull();
+	}
+	
+	
+	private void createUser() {
+		
+		Role adminRole = testEntityManager.find(Role.class, 1);
+		
+		User user = new User("123GHKJHF", "rachid3@gmail.com", "pass", "rachid", "assouani", false);
+		user.setId(33);
+		user.getRoles().add(adminRole);
+		
+		userRepository.save(user);
 	}
 }
