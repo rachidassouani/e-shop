@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +19,7 @@ import io.rachidassouani.eshopcommon.model.User;
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
-
+	
 	@Autowired
 	private UserRepository userRepository;
 	
@@ -29,6 +32,17 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<User> findAllUsers() {
 		return userRepository.findAll();
+	}
+	
+	@Override
+	public Page<User> findAllUsersPerPageNumber(int pageNumber) {
+		
+		Pageable pageable = PageRequest.of(pageNumber - 1, Constant.USERS_PER_PAGE);
+		
+		// find all users by pageNumber and pageSize
+		Page<User> pageUser = userRepository.findAll(pageable);
+		
+		return pageUser;
 	}
 	
 	@Override

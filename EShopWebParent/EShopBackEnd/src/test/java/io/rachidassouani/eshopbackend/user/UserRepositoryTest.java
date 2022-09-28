@@ -2,6 +2,8 @@ package io.rachidassouani.eshopbackend.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +11,11 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.Rollback;
 
-import io.rachidassouani.eshopbackend.user.UserRepository;
 import io.rachidassouani.eshopcommon.model.Role;
 import io.rachidassouani.eshopcommon.model.User;
 
@@ -28,19 +32,19 @@ public class UserRepositoryTest {
 	
 	@BeforeEach
 	public void cleanup() {
-		userRepository.deleteAll();
+		//userRepository.deleteAll();
 	}
 	
 	@Test
 	public void testCreatedUser() {
 		Role adminRole = testEntityManager.find(Role.class, 1);
 		
-		User user = new User("123GHKJHF", "rachid@gmail.com", "pass", "rachid", "assouani", false);
+		User user = new User("10GGMSJHm", "rachid6@gmail.com", "pass", "rachid", "assouani", false);
 		user.getRoles().add(adminRole);
 		
 		userRepository.save(user);
 		
-		assertThat(userRepository.findAll().size()).isEqualTo(1);
+		assertThat(userRepository.findAll().size()).isEqualTo(6);
 	}
 	
 	@Test
@@ -83,6 +87,19 @@ public class UserRepositoryTest {
 		
 	}
 	
+	
+	@Test
+	void shouldReturnListFirstPageTest() {
+		int pageNumber = 1;
+		int pageSize = 4;
+		
+		Pageable pageable = PageRequest.of(pageNumber, pageSize);
+		Page<User> pageUser = userRepository.findAll(pageable);
+		
+		List<User> listUser = pageUser.getContent();
+		
+		assertThat(listUser.size()).isEqualTo(pageSize);
+	}
 	
 	private void createUser() {
 		

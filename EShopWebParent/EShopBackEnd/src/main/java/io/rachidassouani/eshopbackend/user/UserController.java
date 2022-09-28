@@ -3,6 +3,7 @@ package io.rachidassouani.eshopbackend.user;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import io.rachidassouani.eshopbackend.util.Constant;
 import io.rachidassouani.eshopcommon.model.Role;
 import io.rachidassouani.eshopcommon.model.User;
 
@@ -22,13 +24,38 @@ public class UserController {
 	
 	
 	@GetMapping("/users")
-	public String findAllUsers(Model model) {
+	public String findAllUsers(Model model) {	
+		return findAllUsersPerPage(1, model);
+	}
+	
+	@GetMapping("/users/page/{pageNumber}")
+	public String findAllUsersPerPage(@PathVariable(value = "pageNumber") int pageNumber, Model model) {
 		
-		// retrieving list of users
-		List<User> users = userService.findAllUsers();
+		// retrieving the page of users by page number
+		Page<User> pageUsers = userService.findAllUsersPerPageNumber(pageNumber);
+		
+		// retrieving list of users from page of users
+		List<User> listUsers = pageUsers.getContent();
 		
 		//setting list of returned users to the model
-		model.addAttribute("users", users);
+		model.addAttribute("users", listUsers);
+
+		
+		long totalUsers = pageUsers.getTotalElements();
+		long startCount = (pageNumber - 1) * Constant.USERS_PER_PAGE + 1;
+		long endCount = startCount + Constant.USERS_PER_PAGE - 1;
+		
+		if (endCount > totalUsers) {
+			endCount = totalUsers;
+		}
+		
+		//setting total of returned users to the model
+		model.addAttribute("totalUsers", totalUsers);
+		model.addAttribute("startCount", startCount);
+		model.addAttribute("endCount", endCount);
+		model.addAttribute("currentPage", pageNumber);
+		model.addAttribute("totalPages", pageUsers.getTotalPages());
+		
 		
 		return "users";
 	}
