@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0"> 
+	
+	<title>Login - eSHop Admin</title>
+	<link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+
+</head>
+	<body>
+		<div class="container-fluid text-center">
+			<div>
+				<img th:src="@{/images/test-logo.png}">
+			</div>
+			
+			<form th:action="@{/login}" method="post" style="max-width: 300px; margin: 0 auto">
+				<div>
+					<p>Access to eShop panel</p>
+					<p>
+						<input type="email" name="email" placeholder="email" class="form-control" required>
+					</p>
+					<p>
+						<input type="password" name="password" placeholder="password" class="form-control" required>
+					</p>
+					<p>
+						<input type="submit" value="Login" class="btn btn-primary">
+					</p>
+				</div>
+			</form>
+		</div>
+	</body>
+</html>
