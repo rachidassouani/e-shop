@@ -15,6 +15,10 @@
 			</div>
 			
 			<form th:action="@{/login}" method="post" style="max-width: 300px; margin: 0 auto">
+				<div th:if="${param.error}">
+					<p class="text-danger">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
+				</div>
+				
 				<div>
 					<p>Access to eShop panel</p>
 					<p>
