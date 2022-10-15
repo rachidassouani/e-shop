@@ -70,9 +70,6 @@ public class UserServiceImpl implements UserService {
 				encodeUserPassword(user);
 			}
 			
-			
-			
-			
 			// saving user
 			userRepository.save(user);
 			return true;
@@ -144,5 +141,10 @@ public class UserServiceImpl implements UserService {
 			throw new UserNotFoundException(Constant.USER_NOT_FOUND);
 		}
 		userRepository.updateUserStatus(code, status);
+	}
+	
+	@Override
+	public User findUserByEmail(String email) {
+		return userRepository.findUserByEmail(email);
 	}
 }
