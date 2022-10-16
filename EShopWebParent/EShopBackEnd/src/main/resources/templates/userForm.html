@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-	<head th:replace="fragments :: pageHeader('Home - eSHop Admin')" />
+	<head th:replace="fragments :: pageHeader(${pageTitle})" />
 	<body>
 		<div class="container-fluid">
 			<div th:replace="navigation :: navigation"></div>			
