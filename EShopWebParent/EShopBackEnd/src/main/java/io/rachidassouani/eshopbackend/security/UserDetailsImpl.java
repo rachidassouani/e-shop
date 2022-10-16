@@ -64,5 +64,14 @@ public class UserDetailsImpl implements UserDetails {
 	
 	public String getFullName() {
 		return user.getFirstName() + " " + user.getLastName();
-	}	
+	}
+	
+	public void setFirstName(String firstName) {
+		this.user.setFirstName(firstName);
+	}
+	
+	public void setLastName(String firstName) {
+		this.user.setLastName(firstName);
+	}
+	
 }

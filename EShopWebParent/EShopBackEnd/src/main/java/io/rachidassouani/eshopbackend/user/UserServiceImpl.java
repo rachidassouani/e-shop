@@ -147,4 +147,26 @@ public class UserServiceImpl implements UserService {
 	public User findUserByEmail(String email) {
 		return userRepository.findUserByEmail(email);
 	}
+	
+	@Override
+	public void updateUser(User userInForm) throws UserNotFoundException {
+		
+		// find user by logged in user's ID
+		User existingUser = userRepository.findById(userInForm.getId()).get();
+		
+		// logged in user want's to update his password
+		if (!userInForm.getPassword().isEmpty()) {
+			existingUser.setPassword(userInForm.getPassword());
+			encodeUserPassword(existingUser);
+		}
+		
+		// logged in user want's to update his firstName
+		existingUser.setFirstName(userInForm.getFirstName());
+		
+		// logged in user want's to update his lastName
+		existingUser.setLastName(userInForm.getLastName());
+	
+		// update the user
+		userRepository.save(existingUser);
+	}
 }

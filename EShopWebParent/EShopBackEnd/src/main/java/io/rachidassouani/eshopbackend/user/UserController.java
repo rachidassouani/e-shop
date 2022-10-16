@@ -73,7 +73,6 @@ public class UserController {
 	
 	@PostMapping("/users/save")
 	public String saveUser(User user, RedirectAttributes redirectAttributes) {
-		System.out.println("User: " + user);
 		
 		boolean result = userService.saveUser(user);
 		if (result) {

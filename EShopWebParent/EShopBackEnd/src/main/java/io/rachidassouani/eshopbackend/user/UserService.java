@@ -18,4 +18,5 @@ public interface UserService {
 	User findUserByEmail(String email);
 	void deleteUserByCode(String code) throws UserNotFoundException;
 	void updateUserStatus(String code, boolean status) throws UserNotFoundException;
+	void updateUser(User userInForm) throws UserNotFoundException;
 }
