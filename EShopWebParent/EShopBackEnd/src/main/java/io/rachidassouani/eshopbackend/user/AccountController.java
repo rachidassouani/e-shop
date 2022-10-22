@@ -1,5 +1,7 @@
 package io.rachidassouani.eshopbackend.user;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,8 @@ import io.rachidassouani.eshopcommon.model.User;
 @Controller
 public class AccountController {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(AccountController.class);
+	
 	private final UserService userService;
 
 	public AccountController(UserService userService) {
@@ -23,6 +27,8 @@ public class AccountController {
 	
 	@GetMapping("account")
 	public String viewAccountDetails(@AuthenticationPrincipal UserDetailsImpl loggedUSer, Model model) {
+
+		LOGGER.info("viewing account details");
 		
 		// get the userName of the logged user
 		String email = loggedUSer.getUsername();
