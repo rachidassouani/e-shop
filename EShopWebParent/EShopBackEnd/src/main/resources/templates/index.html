@@ -8,8 +8,10 @@
 			<div th:replace="navigation :: navigation"></div>
 			
 			<div>
-				<h1>eShop Control Panel</h1>
-				
+				<h1>eShop Control Panel</h1> Welcome 
+				<a th:href="@{/account}"
+					sec:authentication="principal.fullName"></a>
+				<span sec:authentication="principal.authorities"></span>
 			</div>
 		</div>
 		
