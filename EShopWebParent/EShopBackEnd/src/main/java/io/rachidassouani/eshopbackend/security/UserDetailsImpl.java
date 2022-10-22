@@ -33,7 +33,6 @@ public class UserDetailsImpl implements UserDetails {
 
 	@Override
 	public String getPassword() {
-		System.out.println("pass:" + user.getPassword());
 		return user.getPassword();
 	}
 
@@ -72,6 +71,5 @@ public class UserDetailsImpl implements UserDetails {
 	
 	public void setLastName(String firstName) {
 		this.user.setLastName(firstName);
-	}
-	
+	}	
 }
