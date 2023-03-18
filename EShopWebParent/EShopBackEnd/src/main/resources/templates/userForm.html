@@ -35,7 +35,8 @@
 					<div class="form-group row">
 						<label class="col-sm-4 col-form-label">E-mail:</label>
 						<div class="col-sm-8">
-							<input type="email" th:field="*{email}" readonly="readonly" class="form-control"/>
+							<input th:if="${user.id == null}" type="email" th:field="*{email}" class="form-control"/>
+							<input th:if="${user.id != null}" type="email" th:field="*{email}" class="form-control" readonly="readonly"/>
 						</div>
 					</div>
 					
