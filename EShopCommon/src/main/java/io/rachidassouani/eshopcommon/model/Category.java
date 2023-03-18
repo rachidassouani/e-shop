@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 
 @Entity
@@ -22,6 +23,9 @@ public class Category {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
+	@Column(length = 20, nullable = false, unique = true)
+	private String code;
+	
 	@Column(length = 128, nullable = false, unique = true)
 	private String name;
 	
@@ -29,7 +33,8 @@ public class Category {
 	private String alias;
 	
 	@Column(length = 128, nullable = false)
-	private String image;
+	private String imageName;
+	
 	private boolean enabled;
 	
 	@OneToOne
@@ -48,7 +53,7 @@ public class Category {
 		this.alias = alias;
 		this.enabled = enabled;
 		this.parent = parent;
-		this.image = "default.png";
+		this.imageName = "default.png";
 	}
 
 	/*
@@ -78,12 +83,12 @@ public class Category {
 		this.alias = alias;
 	}
 
-	public String getImage() {
-		return image;
+	public String getImageName() {
+		return imageName;
 	}
 
-	public void setImage(String image) {
-		this.image = image;
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
 	}
 
 	public boolean isEnabled() {
@@ -109,11 +114,28 @@ public class Category {
 	public void setChildren(Set<Category> children) {
 		this.children = children;
 	}
+	
+	public String getCode() {
+		return code;
+	}
 
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	
+	@Transient
+	public String getImagePath() {
+		if (this.id == null )
+			return "/images/image-thumbnail.png";
+		
+		return "/categoriesImage" + this.code + this.imageName; 
+	}
+	
 	// toString method
 	@Override
 	public String toString() {
-		return "Category [id=" + id + ", name=" + name + ", alias=" + alias + ", image=" + image + ", enabled="
+		return "Category [id=" + id + ", name=" + name + ", alias=" + alias + ", imageName=" + imageName + ", enabled="
 				+ enabled + "]";
 	}	
 }

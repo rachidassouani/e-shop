@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 import io.rachidassouani.eshopcommon.model.Category;
 
 @Repository
-public interface CategoryRepository extends JpaRepository<Category, Integer>{}
+public interface CategoryRepository extends JpaRepository<Category, Integer>{
+	
+	public Category findCategoryByCode(String code);
+}
