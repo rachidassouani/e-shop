@@ -11,4 +11,5 @@ public interface CategoryService {
 	List<Category> findAllCategoriesForForm();
 	Category findCategoryByCode(String code) throws CategoryNotFoundException;
 	void deleteCategoryByCode(String code) throws CategoryNotFoundException;
+	String checkCategoryUniqueness(Integer id, String name, String alias);
 }

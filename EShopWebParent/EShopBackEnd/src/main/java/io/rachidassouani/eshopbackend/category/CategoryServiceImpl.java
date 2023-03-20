@@ -58,4 +58,38 @@ public class CategoryServiceImpl implements CategoryService {
 		
 		categoryRepository.delete(category);
 	}
+
+	@Override
+	public String checkCategoryUniqueness(Integer id, String name, String alias) {
+		
+		// check if name and alias are valid
+		if (name == null || name.isBlank())
+			return Constant.INVALID_CATEGORY_NAME;
+		
+		if (alias == null || alias.isBlank())
+			return Constant.INVALID_CATEGORY_ALIAS;
+		
+		Category categoryByName = categoryRepository.findCategoryByName(name);
+		Category categoryByAlias = categoryRepository.findCategoryByAlias(alias);
+		
+		// check for creating new category
+		if (id == null || id == 0) {
+			if (categoryByName != null) {
+				return Constant.CATEGORY_NAME_IS_DUPLICATED;
+			
+			} else if (categoryByAlias != null){
+				return Constant.CATEGORY_ALIAS_IS_DUPLICATED;	
+			}
+		
+		// check for edit existing category
+		} else {
+			if (categoryByName != null && !categoryByName.getId().equals(id)) {
+				return Constant.CATEGORY_NAME_IS_DUPLICATED;	
+			}
+			else if (categoryByAlias != null && !categoryByAlias.getId().equals(id)) {
+				return Constant.CATEGORY_ALIAS_IS_DUPLICATED;	
+			}
+		}
+		return Constant.OK;
+	}
 }

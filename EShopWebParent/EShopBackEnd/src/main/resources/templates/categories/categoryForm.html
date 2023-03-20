@@ -3,7 +3,8 @@
 	<head th:replace="fragments :: pageHeader(${pageTitle})" />
 	<body>
 		<div class="container-fluid">
-			<div th:replace="navigation :: navigation"></div>			
+			<div th:replace="navigation :: navigation"></div>	
+			<div th:replace="modalFragments :: modal_dialog"></div>		
 			<div>
 				<h3>Manage Categories | [[${pageTitle}]]</h3>
 			</div>
@@ -12,6 +13,7 @@
 					th:action="@{/categories/save}"
 					method="post" 
 					th:object="${category}"
+					onsubmit="return checkCategoryUniqueness(this)"
 					style="max-width:700px; margin: 0 auto">
 				
 				<!-- hidden ID, in case updating existing user -->
@@ -97,9 +99,32 @@
 			$(document).ready(function() {
 				$("#buttonCancel").on("click", function() {
 					window.location = "[[@{/categories}]]";
-				});
+				});	
 			});
+			
+			function checkCategoryUniqueness(form) {
+				categoryId = $("#id").val();
+				categoryName = $("#name").val();
+				categoryAlias = $("#alias").val();
+				csrfValue = $("input[name='_csrf']").val();
+				
+				url = "[[@{/categories/checkCategoryUniqueness}]]";
+				
+				params = {id: categoryId, name: categoryName, alias: categoryAlias, _csrf: csrfValue};
+				
+				$.post(url, params, function(res) {
+					if (res === 'OK') {
+						form.submit();
+						return;
+					}
+					showWarningModal(res);	
+				
+				}).fail(function() {
+					showErrorModal("Could not connect to the server");
+				});
+				return false;	
+			}
 		</script>
-		
+		<script th:src="@{/js/commonForm.js}"></script>
 	</body>
 </html>

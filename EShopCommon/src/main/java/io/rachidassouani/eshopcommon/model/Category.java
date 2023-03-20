@@ -55,6 +55,12 @@ public class Category {
 		this.parent = parent;
 		this.imageName = "default.png";
 	}
+	
+	public Category(Integer id, String name, String alias) {
+		this.id = id;
+		this.name = name;
+		this.alias = alias;
+	}
 
 	/*
 	 * Getters & Setters
@@ -122,7 +128,6 @@ public class Category {
 	public void setCode(String code) {
 		this.code = code;
 	}
-
 	
 	@Transient
 	public String getImagePath() {

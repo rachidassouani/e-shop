@@ -60,4 +60,23 @@ public class CategoryRepositoryTest {
 		Set<Category> children = savedCategory.getChildren();
 		assertThat(children.size()).isGreaterThan(0);
 	}
+	
+	@Test
+	public void findCategoryByNameTest() {
+		String categoryName = "Computers";
+		Category foundedCategory = categoryRepository.findCategoryByName(categoryName);
+		
+		assertThat(foundedCategory).isNotNull();
+		assertThat(foundedCategory.getName()).isEqualTo(categoryName);
+	}
+	
+	@Test
+	public void findCategoryByAliasTest() {
+		String categoryAlias = "Phones";
+		Category foundedCategory = categoryRepository.findCategoryByAlias(categoryAlias);
+		
+		assertThat(foundedCategory).isNotNull();
+		assertThat(foundedCategory.getName()).isEqualTo(categoryAlias);
+	}
+	
 }
