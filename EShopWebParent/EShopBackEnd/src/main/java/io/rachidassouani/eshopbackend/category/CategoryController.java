@@ -115,4 +115,23 @@ public class CategoryController {
 		}
 		return "redirect:/categories";
 	}
+	
+	@GetMapping("{code}/enabled/{status}")
+	public String enableCategoryStatusByCode(@PathVariable("code") String code, 
+			@PathVariable("status") boolean status, 
+			RedirectAttributes redirectAttributes) {
+		
+		// updating category status by its code
+		categoryService.enableCategoryStatusByCode(code, status);
+		
+		// check if user wants to enable or disable the category
+		final String messageStatus = (status) ? "enabled" : "disabled";
+		
+		// confirmation message
+		final String message = "The category code " + code + " has been " + messageStatus;
+		
+		redirectAttributes.addFlashAttribute("successMessage", message);
+		
+		return "redirect:/categories";
+	}
 }

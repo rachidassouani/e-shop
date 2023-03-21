@@ -12,4 +12,5 @@ public interface CategoryService {
 	Category findCategoryByCode(String code) throws CategoryNotFoundException;
 	void deleteCategoryByCode(String code) throws CategoryNotFoundException;
 	String checkCategoryUniqueness(Integer id, String name, String alias);
+	void enableCategoryStatusByCode(String code, boolean status); 
 }

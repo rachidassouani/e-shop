@@ -92,4 +92,9 @@ public class CategoryServiceImpl implements CategoryService {
 		}
 		return Constant.OK;
 	}
+
+	@Override
+	public void enableCategoryStatusByCode(String code, boolean status) {
+		categoryRepository.enableCategoryStatusByCode(code, status);
+	}
 }

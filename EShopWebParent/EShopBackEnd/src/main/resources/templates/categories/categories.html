@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
-<head th:replace="fragments :: pageHeader('Users - eSHop Admin')" />
+<head th:replace="fragments :: pageHeader('Categories - eSHop Admin')" />
 	<body>
 		<div class="container-fluid">
 			<div th:replace="navigation :: navigation"></div> 
@@ -35,8 +35,8 @@
 							<td>[[${category.alias}]]</td>
 							<td>[[${category.imageName}]]</td>
 							<td class="text-center">
-								<a th:if="${category.enabled == true}" th:href="@{'/categories/' + ${category.code} + '/deactivate-user'}" title="Deactivate this category" class="fas fa-check" style="color: green;"></a>
-								<a th:if="${category.enabled == false}" th:href="@{'/categories/' + ${category.code} + '/activate-user'}" title="Activate this category" class="fas fa-times" style="color: red;"></a>
+								<a th:if="${category.enabled == true}" th:href="@{'/categories/' + ${category.code} + '/enabled/false'}" title="Deactivate this category" class="fas fa-check" style="color: green;"></a>
+								<a th:if="${category.enabled == false}" th:href="@{'/categories/' + ${category.code} + '/enabled/true'}" title="Activate this category" class="fas fa-times" style="color: red;"></a>
 							</td>
 							<td class="text-center">
 								<a th:href="@{'/categories/edit/' + ${category.code}}" title="Edit this category" class="fa-solid fa-pen-to-square" style="color: green"></a> 
