@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import io.rachidassouani.eshopbackend.util.Constant;
 import io.rachidassouani.eshopbackend.util.FileUploadService;
 import io.rachidassouani.eshopbackend.util.RandomCodeService;
 import io.rachidassouani.eshopcommon.model.Category;
@@ -27,16 +29,41 @@ public class CategoryController {
 	private CategoryService categoryService;
 	
 	@GetMapping
-	public String findAllCategories(Model model) {
+	public String findAllCategories(Model model) {	
+		return findAllCategoriesPerPageNumber(1, model);
+	}
+	
+	@GetMapping("page/{pageNumber}")
+	public String findAllCategoriesPerPageNumber(@PathVariable("pageNumber") int pageNumber, Model model) {
 		
-		//getting all categories from the database using categoryService
-		List<Category>allCategories  = categoryService.findAllCategories();
+		//getting categories by page from the database using categoryService
+		Page<Category> pageCategories  = categoryService.findAllCategoriesPerPageNumber(pageNumber);
 		
+		// casting the categories page to list of categories
+		List<Category> allCategories = pageCategories.getContent();
+		
+		
+		long totalCategories = pageCategories.getTotalElements();
+		long startCount = (pageNumber - 1) * Constant.CATEGORIES_PER_PAGE + 1;
+		long endCount = startCount + Constant.CATEGORIES_PER_PAGE - 1;
+		
+		if (endCount > totalCategories) {
+			endCount = totalCategories;
+		}
+	
+	
 		//setting list of returned categories to the model
 		model.addAttribute("allCategories", allCategories);
 		
+		model.addAttribute("startCount", startCount);
+		model.addAttribute("endCount", endCount);
+		model.addAttribute("currentPage", pageNumber);
+		model.addAttribute("totalCategories", totalCategories);
+		model.addAttribute("totalPages", pageCategories.getTotalPages());	
+		
 		return "categories/categories";
 	}
+	
 	
 	@GetMapping("new")
 	public String newCategoryForm(Model model) {

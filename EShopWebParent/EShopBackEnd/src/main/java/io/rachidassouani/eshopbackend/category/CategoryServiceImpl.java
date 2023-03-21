@@ -5,6 +5,9 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -96,5 +99,11 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public void enableCategoryStatusByCode(String code, boolean status) {
 		categoryRepository.enableCategoryStatusByCode(code, status);
+	}
+
+	@Override
+	public Page<Category> findAllCategoriesPerPageNumber(int pageNumber) {
+		Pageable pageable = PageRequest.of(pageNumber - 1, Constant.CATEGORIES_PER_PAGE);
+		return categoryRepository.findAll(pageable);		
 	}
 }
