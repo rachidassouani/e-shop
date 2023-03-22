@@ -13,4 +13,5 @@ public class Constant {
 	public static final String INVALID_CATEGORY_NAME = "Invalid category name.";
 	public static final String INVALID_CATEGORY_ALIAS = "Invalid category alias.";
 	public static final int CATEGORIES_PER_PAGE = 5;
+	public static final int BRANDS_PER_PAGE = 5;
 }
