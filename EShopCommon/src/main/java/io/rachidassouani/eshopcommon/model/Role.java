@@ -7,8 +7,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Entity
 @Table(name = "role")
+@Data
+@NoArgsConstructor
 public class Role {
 
 	@Id
@@ -25,44 +30,12 @@ public class Role {
 	 * Constructors
 	 */
 
-	public Role() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
 	public Role(String name, String description) {
 		super();
 		this.name = name;
 		this.description = description;
 	}
 
-	/*
-	 * Getters & Setters
-	 */
-	
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
 
 	/*
 	 * toString Method

@@ -14,9 +14,18 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 
 @Entity
 @Table(name = "category")
+@Data
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class Category {
 	
 	@Id 
@@ -44,8 +53,10 @@ public class Category {
 	@OneToMany(mappedBy = "parent")	
 	private Set<Category> children = new HashSet<>();
 
-	// Constructors	
-	public Category() {}
+
+	/*
+	 * Constructors
+	 */
 
 	public Category(String name, String alias, boolean enabled, Category parent) {
 		super();
@@ -62,72 +73,6 @@ public class Category {
 		this.alias = alias;
 	}
 
-	/*
-	 * Getters & Setters
-	 */
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getAlias() {
-		return alias;
-	}
-
-	public void setAlias(String alias) {
-		this.alias = alias;
-	}
-
-	public String getImageName() {
-		return imageName;
-	}
-
-	public void setImageName(String imageName) {
-		this.imageName = imageName;
-	}
-
-	public boolean isEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
-
-	public Category getParent() {
-		return parent;
-	}
-
-	public void setParent(Category parent) {
-		this.parent = parent;
-	}
-
-	public Set<Category> getChildren() {
-		return children;
-	}
-
-	public void setChildren(Set<Category> children) {
-		this.children = children;
-	}
-	
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
 	
 	@Transient
 	public String getImagePath() {
@@ -135,12 +80,5 @@ public class Category {
 			return "/images/image-thumbnail.png";
 		
 		return "/categoriesImage" + this.code + this.imageName; 
-	}
-	
-	// toString method
-	@Override
-	public String toString() {
-		return "Category [id=" + id + ", name=" + name + ", alias=" + alias + ", imageName=" + imageName + ", enabled="
-				+ enabled + "]";
 	}	
 }

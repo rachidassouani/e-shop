@@ -17,12 +17,12 @@
 			<div th:if="${errorMessage != null}" class="alert alert-danger txet-center">
 				[[${errorMessage}]]
 			</div>
-			<div>
+			<div class="full-details">
 				<table class="table table-bordered table-striped table-hover table-responsive-xl">
 					<thead class="">
 						<tr>	
 							<th>Name</th>
-							<th>Alias</th>
+							<th class="hideable-column">Alias</th>
 							<th>Image</th>
 							<th>Enabled</th>
 							<th></th>
@@ -32,7 +32,7 @@
 						
 						<tr th:each="category : ${allCategories}">
 							<td>[[${category.name}]]</td>
-							<td>[[${category.alias}]]</td>
+							<td class="hideable-column">[[${category.alias}]]</td>
 							<td>[[${category.imageName}]]</td>
 							<td class="text-center">
 								<a th:if="${category.enabled == true}" th:href="@{'/categories/' + ${category.code} + '/enabled/false'}" title="Deactivate this category" class="fas fa-check" style="color: green;"></a>
@@ -83,7 +83,7 @@
 		</div>
 		
 		<div class="modal fade" id="deleteModal">
-			<div class="modal-dialog">
+			<div class="mo dal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h4 class="modal-title" >Delete Confirmation</h4>
