@@ -26,6 +26,9 @@ public class Brand {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+
+	@Column(nullable = false, unique = true, length = 20)
+	private String code;
 	
 	@Column(nullable = false, unique = true, length = 50)
 	private String name;
