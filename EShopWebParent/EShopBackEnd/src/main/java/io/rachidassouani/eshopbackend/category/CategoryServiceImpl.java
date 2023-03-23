@@ -32,15 +32,15 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public List<Category> findAllCategories() {
 		LOGGER.info("finding all categories");
-		List<Category> categoris = categoryRepository.findAll();
-		return categoris;
+		List<Category> categories = categoryRepository.findAll();
+		return categories;
 	}
 	
 	@Override
 	public List<Category> findAllCategoriesForForm() {
 		LOGGER.info("finding all categories to be displayed in the form");
-		List<Category> categoris = categoryRepository.findAll();
-		return categoris;
+		List<Category> categories = categoryRepository.findAll();
+		return categories;
 	}
 
 	@Override

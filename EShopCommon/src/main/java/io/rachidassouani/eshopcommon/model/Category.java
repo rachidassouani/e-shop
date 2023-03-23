@@ -79,6 +79,6 @@ public class Category {
 		if (this.id == null )
 			return "/images/image-thumbnail.png";
 		
-		return "/categoriesImage" + this.code + this.imageName; 
-	}	
+		return "/categoriesImage/" + this.code + "/" + this.imageName; 
+	}
 }

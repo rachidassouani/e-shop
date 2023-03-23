@@ -10,8 +10,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import io.rachidassouani.eshopbackend.category.CategoryService;
 import io.rachidassouani.eshopbackend.util.Constant;
 import io.rachidassouani.eshopcommon.model.Brand;
+import io.rachidassouani.eshopcommon.model.Category;
 
 @Service
 @Transactional
@@ -21,20 +23,63 @@ public class BrandService {
 	
 	private final BrandRepository brandRepository;
 	
-	public BrandService(BrandRepository brandRepository) {
-		this.brandRepository = brandRepository;
-	}
+	private final CategoryService categoryService;
 	
+	public BrandService(BrandRepository brandRepository, CategoryService categoryService) {
+		this.brandRepository = brandRepository;
+		this.categoryService = categoryService;
+	}
 	
 	List<Brand> findAllBrands() {
 		LOGGER.info("finding all brands");
 		return brandRepository.findAll();
 	}
 
-
 	public Page<Brand> findBrandsPerPage(int pageNumber) {
 		LOGGER.info("finding brands per page number, current page equals " + pageNumber);		
 		Pageable pageable = PageRequest.of(pageNumber - 1, Constant.BRANDS_PER_PAGE);
 		return brandRepository.findAll(pageable);
+	}
+
+	public List<Category> findAllCategoriesInBrandsForm() {
+		return categoryService.findAllCategoriesForForm();
+	}
+
+	public void deleteCategoryByCode(String code) {
+		LOGGER.info("Deleting brandby code" + code);		
+		brandRepository.deleteBrandByCode(code);	
+	}
+
+	public Brand saveBrand(Brand brand) {
+		LOGGER.info("saving brand");
+		return brandRepository.save(brand);
+	}
+
+	public Brand findBrandByCode(String code) throws BrandNotFoundException {
+		LOGGER.info("Finding brand by code = " + code);
+		return brandRepository.findBrandByCode(code);
+	}
+
+	public String checkBrandUniqueness(Integer id, String name) {
+		
+		// check if name and alias are valid
+		if (name == null || name.isBlank())
+			return Constant.INVALID_CATEGORY_NAME;
+		
+		Brand brandByName = brandRepository.findBrandByName(name);
+		
+		// check for creating new brand
+		if (id == null || id == 0) {
+			if (brandByName != null) {
+				return Constant.BRAND_NAME_IS_DUPLICATED;
+			}
+		
+		// check for edit existing brand
+		} else {
+			if (brandByName != null && !brandByName.getId().equals(id)) {
+				return Constant.BRAND_NAME_IS_DUPLICATED;	
+			}
+		}
+		return Constant.OK;
 	}
 }

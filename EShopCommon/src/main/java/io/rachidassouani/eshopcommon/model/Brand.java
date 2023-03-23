@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.Transient;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -39,4 +40,12 @@ public class Brand {
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "brand_category", joinColumns = @JoinColumn(name = "brand_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private Set<Category> categories = new HashSet<>();
+	
+	@Transient
+	public String getLogoPath() {
+		if (this.id == null)
+			return "/images/image-thumbnail.png";
+		
+		return "/brandsLogo/" + this.code + "/" + this.logo;
+	}
 }
