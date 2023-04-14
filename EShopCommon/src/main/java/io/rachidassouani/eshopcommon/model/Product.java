@@ -10,10 +10,16 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,5 +68,11 @@ public class Product {
 	
 	@ManyToOne
 	@JoinColumn(name="brand_id")
-	private Brand brand;	
+	private Brand brand;
+	
+	@Override
+	public String toString() {
+		return String.format("Product [id=%s, code=%s, name=%s, alias=%s, enabled=%s, inStock=%s, cost=%s, price=%s]",
+				id, code, name, alias, enabled, inStock, cost, price);
+	}	
 }
