@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:replace="fragments :: pageHeader('Products - eSHop Admin')" />
+	<body>
+		<div class="container-fluid">
+			<div th:replace="navigation :: navigation"></div> 
+			
+			<div>
+				<h3>Manage Products</h3>
+				<a th:href="@{/products/new}">Create New Products</a>
+			</div>
+			
+			<div th:if="${successMessage != null}" class="alert alert-success txet-center">
+				[[${successMessage}]]
+			</div>
+			<div th:if="${errorMessage != null}" class="alert alert-danger txet-center">
+				[[${errorMessage}]]
+			</div>
+			<div class="full-details">
+				<table class="table table-bordered table-striped table-hover table-responsive-xl">
+					<thead class="">
+						<tr>	
+							<th>Image</th>
+							<th>Name</th>
+							<th>Brand</th>
+							<th>Category</th>
+							<th>Enabled</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						
+						<tr th:each="product : ${allProducts}">
+							<td>[[${product.name}]]</td>
+							<td>[[${product.name}]]</td>
+							<td>[[${product.brand.name}]]</td>
+							<td>[[${product.category.name}]]</td>
+							
+							<td class="text-center">
+								<a th:if="${product.enabled == true}" th:href="@{'/products/' + ${product.code} + '/enabled/false'}" title="Deactivate this product" class="fas fa-check" style="color: green;"></a>
+								<a th:if="${product.enabled == false}" th:href="@{'/products/' + ${product.code} + '/enabled/true'}" title="Activate this product" class="fas fa-times" style="color: red;"></a>
+							</td>
+							<td class="text-center">
+								<a th:href="@{'/products/detail/' + ${product.code}}" title="View details of this product" class="fas fa-file-alt" ></a>
+								&nbsp;
+								<a th:href="@{'/products/edit/' + ${product.code}}" title="Edit this product" class="fa-solid fa-pen-to-square" style="color: green"></a> 
+								&nbsp;
+								<a th:href="@{'/products/delete/' + ${product.code}}" title="Delete this product" class="fas fa-trash delete-link" style="color: red"></a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<!-- 
+		<div class="text-center mt-1" th:if="${totalProducts > 0}">
+			<span>Showing products # [[${startCount}]] to [[${endCount}]] of [[${totalProducts}]]</span>
+		</div>
+		<div class="text-center mt-1" th:unless="${totalProducts > 0}">
+			<span>No product founded!</span>
+		</div>
+		
+		<div>
+			<nav>
+				<ul class="pagination justify-content-center">
+					
+					<li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+						<a class="page-link" th:href="@{/products/page/1}">First</a>
+					</li>
+					
+					<li th:class="${currentPage>1 ? 'page-item' : 'page-item disabled'}">
+						<a class="page-link" th:href="@{'/products/page/' + ${currentPage - 1}}">Previous</a>
+					</li>
+					
+					<li th:class="${currentPage != i ? 'page-item' : 'page-item active'}" th:each="i : ${#numbers.sequence(1, totalPages)}">
+						<a class="page-link" th:href="@{'/products/page/' + ${i}}">[[${i}]]</a>
+					</li>
+					
+					<li th:class="${totalPages > currentPage ? 'page-item' : 'page-item disabled'}">
+						<a class="page-link" th:href="@{'/products/page/' + ${currentPage + 1}}">Next</a>
+					</li>
+					
+					<li th:class="${totalPages > currentPage ? 'page-item' : 'page-item disabled'}">
+						<a class="page-link" th:href="@{'/products/page/' + ${totalPages}}">Last</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+		--> 
+		<div class="modal fade" id="deleteModal">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title" >Delete Confirmation</h4>
+						<button class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body">
+						<span>Are you sure you want to delete this product </span>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+						<a href="" class="btn btn-success" id="deleteBtn">Delete</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<footer>
+		</footer>
+		
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$(".delete-link").on("click", function(e) {
+					e.preventDefault();
+					const link = ($(this).attr("href"));
+					$("#deleteModal").modal();
+					$("#deleteBtn").attr("href", link);
+					
+				});
+				
+				$("#logoutLink").on("click", function(e) {
+					e.preventDefault();
+					document.logoutForm.submit();
+				});
+			})
+		</script>
+	</body>
+</html>
