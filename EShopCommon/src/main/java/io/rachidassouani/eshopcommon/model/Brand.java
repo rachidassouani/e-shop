@@ -14,14 +14,12 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class Brand {
 	
 	@Id
@@ -41,11 +39,22 @@ public class Brand {
 	@JoinTable(name = "brand_category", joinColumns = @JoinColumn(name = "brand_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private Set<Category> categories = new HashSet<>();
 	
+	public Brand(int id, String code, String name) {
+		this.id = id;
+		this.code = code;
+		this.name = name;
+	}
+	
 	@Transient
 	public String getLogoPath() {
 		if (this.id == null)
 			return "/images/image-thumbnail.png";
 		
 		return "/brandsLogo/" + this.code + "/" + this.logo;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("Brand [id=%s, code=%s, name=%s]", id, code, name);
 	}
 }

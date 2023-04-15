@@ -30,9 +30,9 @@ public class BrandService {
 		this.categoryService = categoryService;
 	}
 	
-	List<Brand> findAllBrands() {
+	public List<Brand> findAllBrands() {
 		LOGGER.info("finding all brands");
-		return brandRepository.findAll();
+		return brandRepository.findAllBrands();
 	}
 
 	public Page<Brand> findBrandsPerPage(int pageNumber) {

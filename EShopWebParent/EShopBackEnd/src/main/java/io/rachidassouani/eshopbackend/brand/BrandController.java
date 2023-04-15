@@ -136,7 +136,8 @@ public class BrandController {
 		} catch (BrandNotFoundException e) {
 			e.printStackTrace();
 			redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+			return "redirect:/brands";
 		}	
-		return "redirect:/brands";
+		
 	}
 }

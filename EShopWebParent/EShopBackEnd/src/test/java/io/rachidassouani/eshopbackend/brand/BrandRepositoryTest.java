@@ -66,8 +66,8 @@ public class BrandRepositoryTest {
 
 	@Test
 	public void findAllBrandsTest() {
-		List<Brand> allBrands = brandRepository.findAll();
-
+		List<Brand> allBrands = brandRepository.findAllBrands();
+		allBrands.forEach(System.out::println);
 		assertThat(allBrands).isNotNull();
 		assertThat(allBrands.size()).isGreaterThan(0);
 	}
