@@ -59,6 +59,11 @@ public class BrandService {
 		LOGGER.info("Finding brand by code = " + code);
 		return brandRepository.findBrandByCode(code);
 	}
+	
+	public Brand findBrandById(Integer id) throws BrandNotFoundException {
+		LOGGER.info("Finding brand by id = " + id);
+		return brandRepository.findById(id).get();
+	}
 
 	public String checkBrandUniqueness(Integer id, String name) {
 		

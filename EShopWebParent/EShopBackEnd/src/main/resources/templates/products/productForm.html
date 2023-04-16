@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="fragments :: pageHeader(${pageTitle})" />
+	<body>
+		<div class="container-fluid">
+			<div th:replace="navigation :: navigation"></div>	
+			<div th:replace="modalFragments :: modal_dialog"></div>		
+			<div>
+				<h3>Manage Products | [[${pageTitle}]]</h3>
+			</div>
+
+			<form
+					th:action="@{/products/save}"
+					method="post" 
+					th:object="${productRequest}">
+				
+				<!-- hidden ID, in case updating existing brand -->
+				<input type="hidden" th:field="*{id}" />
+				
+				<!-- hidden code, in case updating existing brand -->
+				<input type="hidden" th:field="*{code}" />
+				<div>
+					<!-- Nav tabs -->
+					<ul class="nav nav-tabs" id="myTab" role="tablist">
+						  <li class="nav-item">
+						    <a class="nav-link active" id="overview-tab" data-toggle="tab" href="#overview" role="tab">Overview</a>
+						  </li>
+						  <li class="nav-item">
+						    <a class="nav-link" id="description-tab" data-toggle="tab" href="#description" role="tab">Description</a>
+						  </li>
+						  <li class="nav-item">
+						    <a class="nav-link" id="images-tab" data-toggle="tab" href="#images" role="tab"> Images</a>
+						  </li>
+						  <li class="nav-item">
+						    <a class="nav-link" id="details-tab" data-toggle="tab" href="#details" role="tab">Details</a>
+						  </li>
+						  <li class="nav-item">
+						    <a class="nav-link" id="shipping-tab" data-toggle="tab" href="#shipping" role="tab">Shipping</a>
+						  </li>
+					</ul>
+					
+					<!-- Tab panes -->
+					<div class="tab-content">
+						  <div class="tab-pane active p-3" id="overview" role="tabpanel">
+						  		<div th:replace="products/productOverview :: content"></div>
+						  </div>
+						  <div class="tab-pane p-3" id="description" role="tabpanel">
+								<div th:replace="products/productDescription :: content"></div>
+						  </div>
+						  <div class="tab-pane p-3" id="images" role="tabpanel">Images</div>
+						  <div class="tab-pane p-3" id="details" role="tabpanel">Details</div>
+						  <div class="tab-pane p-3" id="shipping" role="tabpanel">
+						  		<div th:replace="products/productShipping :: content"></div>
+						  </div>
+					</div>
+					<div class="text-center">
+						<input type="button" value="Cancel" id="buttonCancel" class="btn btn-secondary m-3"/>
+						<input type="submit" value="Save" class="btn btn-primary "/>
+					</div>
+				</div>
+			</form>
+			
+		</div>
+		<div class="modal fade" id="modalDialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title" id="modalTitle" ></h4>
+						<button class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body">
+						<span id="modalBody"></span>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<footer>
+		</footer>
+		
+		<script>
+			$(document).ready(function() {
+				$("#buttonCancel").on("click", function() {
+					window.location = "[[@{/products}]]";
+				});
+				
+				dropdownBrands = $("#brandCode");
+				dropdownCategories = $("#categoryCode");
+				
+				dropdownBrands.change(function() {
+					dropdownCategories.empty();
+					findAllCategoriesByBrandCode();
+				});
+				findAllCategoriesByBrandCode();
+			});
+			
+			function findAllCategoriesByBrandCode() {
+				brandCode = dropdownBrands.val()
+				url = "[[@{/brands/}]]"+brandCode+"/categories";
+				console.log("brandcode "+ brandCode);
+
+				$.get(url, function(res) {
+					$.each(res, function(index, category) {
+						$("<option>").val(category.code).text(category.name).appendTo(dropdownCategories)
+					});
+				
+				}).fail(function() {
+					showErrorModal("Could not connect to the server");
+				});		
+			}
+		</script>
+		<script th:src="@{/js/commonForm.js}"></script>
+	</body>
+</html>

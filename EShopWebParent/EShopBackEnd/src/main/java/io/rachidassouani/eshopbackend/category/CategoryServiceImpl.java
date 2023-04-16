@@ -45,6 +45,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public Category findCategoryByCode(String code) throws CategoryNotFoundException {
+		LOGGER.info("Finding category by code = " + code);
 		Category category = categoryRepository.findCategoryByCode(code);
 		if (category == null)
 			throw new CategoryNotFoundException(Constant.CATEGORY_NOT_FOUND);

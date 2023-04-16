@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<body>
+		<div th:fragment="content" th:remove="tag"> 
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">Short Description:</label>
+				<div class="col-sm-10">
+					<textarea th:field="*{shortDescription}" rows="5" maxlength="512" class="form-control"></textarea>
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">Full Description:</label>
+				<div class="col-sm-10">
+					<textarea th:field="*{fullDescription}" rows="5" maxlength="512" class="form-control"></textarea>
+				</div>
+			</div>
+			
+		</div>
+	</body>
+</html>

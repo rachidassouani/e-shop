@@ -1,23 +1,81 @@
 package io.rachidassouani.eshopbackend.product;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import io.rachidassouani.eshopbackend.brand.BrandNotFoundException;
+import io.rachidassouani.eshopbackend.brand.BrandService;
+import io.rachidassouani.eshopbackend.category.CategoryNotFoundException;
+import io.rachidassouani.eshopbackend.category.CategoryService;
+import io.rachidassouani.eshopbackend.util.RandomCodeService;
+import io.rachidassouani.eshopcommon.model.Brand;
+import io.rachidassouani.eshopcommon.model.Category;
 import io.rachidassouani.eshopcommon.model.Product;
 
 @Service
 @Transactional
 public class ProductService {
 
-	private final ProductRepository productRepository;	
+	private final ProductRepository productRepository;
+	private final BrandService brandService;
+	private final CategoryService categoryService;	
 	
-	public ProductService(ProductRepository productRepository) {
+	public ProductService(ProductRepository productRepository, 
+			BrandService brandService, 
+			CategoryService categoryService) {
+		
 		this.productRepository = productRepository;
+		this.brandService = brandService;
+		this.categoryService = categoryService;
 	}
 
 	public List<Product> findAllProducts() {
 		return (List<Product>) productRepository.findAll();
+	}
+	
+	public Product save(ProductRequest productRequest) throws CategoryNotFoundException, BrandNotFoundException {
+		
+		// finding brand by brand code
+		Brand brand = brandService.findBrandByCode(productRequest.getBrandCode());
+		
+		// finding category by brand code
+		Category category = categoryService.findCategoryByCode(productRequest.getCategoryCode());
+		
+		/* If the alias that comes with the request is empty, the alias in this case will be the product name.
+		 * all spaces that alias has will be replaced by dashes (-)
+		 */
+		String alias = "";
+		if (productRequest.getAlias() != null && !productRequest.getAlias().isEmpty()) {
+			alias = productRequest.getAlias().trim().replaceAll(" ", "-"); 
+		} else {
+			alias = productRequest.getName().trim().replaceAll(" ", "-");
+		}
+		
+		Product productToSave = Product.builder()
+				.code(RandomCodeService.generatCode())
+				.name(productRequest.getName())
+				.alias(alias)
+				.brand(brand)
+				.category(category)
+				.enabled(productRequest.isEnabled())
+				.inStock(productRequest.isInStock())
+				.shortDescription(productRequest.getShortDescription())
+				.fullDescription(productRequest.getFullDescription())
+				.cost(productRequest.getCost())
+				.price(productRequest.getPrice())
+				.discountPercent(productRequest.getDiscountPercent())
+				.length(productRequest.getLength())
+				.width(productRequest.getWidth())
+				.height(productRequest.getHeight())
+				.weight(productRequest.getWeight())
+				.createdTime(LocalDateTime.now())
+				.updatedTime(LocalDateTime.now())
+				.build();
+		
+		Product savedProduct = productRepository.save(productToSave);
+		return savedProduct;
 	}
 }
