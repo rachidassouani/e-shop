@@ -6,4 +6,5 @@ import io.rachidassouani.eshopcommon.model.Product;
 
 public interface ProductRepository extends PagingAndSortingRepository<Product, Long>{
 
+	Product findProductByName(String name);
 }

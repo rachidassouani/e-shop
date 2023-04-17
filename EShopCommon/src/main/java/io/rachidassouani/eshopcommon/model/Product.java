@@ -28,10 +28,10 @@ public class Product {
 	@Column(length = 20, nullable = false, unique = true)
 	private String code;
 	
-	@Column(length = 256, nullable = false)
+	@Column(length = 256, nullable = false, unique = true)
 	private String name;
 	
-	@Column(length = 256, nullable = false)
+	@Column(length = 256, nullable = false, unique = true)
 	private String alias;
 	
 	@Column(name="short_description", length = 512, nullable = false)

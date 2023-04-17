@@ -12,12 +12,13 @@
 			<form
 					th:action="@{/products/save}"
 					method="post" 
-					th:object="${productRequest}">
+					th:object="${productRequest}"
+					onsubmit="return checkProductUniqueness(this)">
 				
-				<!-- hidden ID, in case updating existing brand -->
+				<!-- hidden ID, in case updating existing product -->
 				<input type="hidden" th:field="*{id}" />
 				
-				<!-- hidden code, in case updating existing brand -->
+				<!-- hidden code, in case updating existing product -->
 				<input type="hidden" th:field="*{code}" />
 				<div>
 					<!-- Nav tabs -->
@@ -111,6 +112,29 @@
 					showErrorModal("Could not connect to the server");
 				});		
 			}
+			
+			function checkProductUniqueness(form) {
+				brandId = $("#id").val();
+				brandName = $("#name").val();
+				csrfValue = $("input[name='_csrf']").val();
+				
+				url = "[[@{/products/checkProductUniqueness}]]";
+				
+				params = {id: brandId, name: brandName, _csrf: csrfValue};
+				
+				$.post(url, params, function(res) {
+					if (res === 'OK') {
+						form.submit();
+						return;
+					}
+					showWarningModal(res);	
+				
+				}).fail(function() {
+					showErrorModal("Could not connect to the server");
+				});
+				return false;	
+			}
+		
 		</script>
 		<script th:src="@{/js/commonForm.js}"></script>
 	</body>

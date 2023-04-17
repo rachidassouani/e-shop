@@ -10,6 +10,7 @@ import io.rachidassouani.eshopbackend.brand.BrandNotFoundException;
 import io.rachidassouani.eshopbackend.brand.BrandService;
 import io.rachidassouani.eshopbackend.category.CategoryNotFoundException;
 import io.rachidassouani.eshopbackend.category.CategoryService;
+import io.rachidassouani.eshopbackend.util.Constant;
 import io.rachidassouani.eshopbackend.util.RandomCodeService;
 import io.rachidassouani.eshopcommon.model.Brand;
 import io.rachidassouani.eshopcommon.model.Category;
@@ -21,12 +22,11 @@ public class ProductService {
 
 	private final ProductRepository productRepository;
 	private final BrandService brandService;
-	private final CategoryService categoryService;	
-	
-	public ProductService(ProductRepository productRepository, 
-			BrandService brandService, 
+	private final CategoryService categoryService;
+
+	public ProductService(ProductRepository productRepository, BrandService brandService,
 			CategoryService categoryService) {
-		
+
 		this.productRepository = productRepository;
 		this.brandService = brandService;
 		this.categoryService = categoryService;
@@ -35,35 +35,37 @@ public class ProductService {
 	public List<Product> findAllProducts() {
 		return (List<Product>) productRepository.findAll();
 	}
-	
+
 	public Product save(ProductRequest productRequest) throws CategoryNotFoundException, BrandNotFoundException {
-		
+
 		// finding brand by brand code
 		Brand brand = brandService.findBrandByCode(productRequest.getBrandCode());
-		
+
 		// finding category by brand code
 		Category category = categoryService.findCategoryByCode(productRequest.getCategoryCode());
-		
-		/* If the alias that comes with the request is empty, the alias in this case will be the product name.
-		 * all spaces that alias has will be replaced by dashes (-)
+
+		/*
+		 * If the alias that comes with the request is empty, the alias in this case
+		 * will be the product name. all spaces that alias has will be replaced by
+		 * dashes (-)
 		 */
 		String alias = "";
 		if (productRequest.getAlias() != null && !productRequest.getAlias().isEmpty()) {
-			alias = productRequest.getAlias().trim().replaceAll(" ", "-"); 
+			alias = productRequest.getAlias().trim().replaceAll(" ", "-");
 		} else {
 			alias = productRequest.getName().trim().replaceAll(" ", "-");
 		}
-		
+
 		Product productToSave = Product.builder()
 				.code(RandomCodeService.generatCode())
 				.name(productRequest.getName())
-				.alias(alias)
-				.brand(brand)
+				.alias(alias).brand(brand)
 				.category(category)
 				.enabled(productRequest.isEnabled())
 				.inStock(productRequest.isInStock())
 				.shortDescription(productRequest.getShortDescription())
-				.fullDescription(productRequest.getFullDescription())
+				.fullDescription(productRequest
+				.getFullDescription())
 				.cost(productRequest.getCost())
 				.price(productRequest.getPrice())
 				.discountPercent(productRequest.getDiscountPercent())
@@ -74,8 +76,31 @@ public class ProductService {
 				.createdTime(LocalDateTime.now())
 				.updatedTime(LocalDateTime.now())
 				.build();
-		
+
 		Product savedProduct = productRepository.save(productToSave);
 		return savedProduct;
+	}
+
+	public String checkProductUniqueness(Long id, String name) {
+
+		// check if name and alias are valid
+		if (name == null || name.isBlank())
+			return Constant.INVALID_CATEGORY_NAME;
+
+		Product productByName = productRepository.findProductByName(name);
+
+		// check for creating new product
+		if (id == null || id == 0) {
+			if (productByName != null) {
+				return Constant.PRODUCT_NAME_IS_DUPLICATED;
+			}
+
+		// check for edit existing product
+		} else {
+			if (productByName != null && !productByName.getId().equals(id)) {
+				return Constant.PRODUCT_NAME_IS_DUPLICATED;
+			}
+		}
+		return Constant.OK;
 	}
 }
