@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -66,4 +67,27 @@ public class ProductController {
 		}
 		return "redirect:/products";
 	}
+	
+	@GetMapping("{code}/enabled/{status}")
+	public String enableProductStatusByCode(@PathVariable("code") String code, 
+			@PathVariable("status") boolean status, 
+			RedirectAttributes redirectAttributes) {
+		
+		log.info("enabling / disabling product status by code");
+		
+		// updating product status by its code
+		productService.enableProductStatusByCode(code, status);
+		
+		// check if user wants to enable or disable the product
+		final String messageStatus = (status) ? "enabled" : "disabled";
+		
+		// confirmation message
+		final String message = "The product code " + code + " has been " + messageStatus;
+		
+		redirectAttributes.addFlashAttribute("successMessage", message);
+		
+		return "redirect:/products";
+	}
+	
+	
 }

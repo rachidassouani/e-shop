@@ -103,4 +103,8 @@ public class ProductService {
 		}
 		return Constant.OK;
 	}
+
+	public void enableProductStatusByCode(String code, boolean status) {
+		productRepository.enableProductStatusByCode(code, status);
+	}
 }
