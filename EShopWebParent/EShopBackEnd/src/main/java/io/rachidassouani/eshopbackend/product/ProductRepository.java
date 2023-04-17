@@ -10,6 +10,8 @@ import io.rachidassouani.eshopcommon.model.Product;
 public interface ProductRepository extends PagingAndSortingRepository<Product, Long>{
 
 	Product findProductByName(String name);
+	
+	Product findProductByCode(String name);
 
 	@Query("UPDATE Product c SET c.enabled=:status WHERE c.code=:code")
 	@Modifying

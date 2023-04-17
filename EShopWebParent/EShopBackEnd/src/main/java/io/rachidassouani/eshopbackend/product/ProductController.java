@@ -89,5 +89,24 @@ public class ProductController {
 		return "redirect:/products";
 	}
 	
+	@GetMapping("delete/{code}")
+	public String deleteUser(@PathVariable("code") String code, Model model, 
+			RedirectAttributes redirectAttributes) {
+		
+		log.info("Deleting product: " + code);
+		try {
+			
+			productService.deleteProductByCode(code);
+			
+			redirectAttributes.addFlashAttribute("successMessage", "Product code " + code
+					+" has been deleted succefully");
+			
+		} catch (ProductNotFoundException e) {
+			e.printStackTrace();
+			redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+			
+		}
+		return "redirect:/products";
+	}
 	
 }

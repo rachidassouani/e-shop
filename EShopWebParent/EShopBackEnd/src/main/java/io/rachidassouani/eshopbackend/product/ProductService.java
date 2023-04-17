@@ -107,4 +107,13 @@ public class ProductService {
 	public void enableProductStatusByCode(String code, boolean status) {
 		productRepository.enableProductStatusByCode(code, status);
 	}
+
+	public void deleteProductByCode(String code) throws ProductNotFoundException {
+		Product product = productRepository.findProductByCode(code);
+		if (product == null)
+			throw new ProductNotFoundException(
+					String.format(Constant.CAN_NOT_DELETE_PRODUCT, code));
+		
+		productRepository.delete(product);
+	}
 }

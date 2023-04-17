@@ -15,5 +15,6 @@ public class Constant {
 	public static final int CATEGORIES_PER_PAGE = 5;
 	public static final int BRANDS_PER_PAGE = 5;
 	public static final String BRAND_NAME_IS_DUPLICATED = "Brand name is duplicated.";
-	public static final String PRODUCT_NAME_IS_DUPLICATED = "Product name is duplicated.";;
+	public static final String PRODUCT_NAME_IS_DUPLICATED = "Product name is duplicated.";
+	public static final String CAN_NOT_DELETE_PRODUCT = "Product with code %s can not be deleted.";
 }
