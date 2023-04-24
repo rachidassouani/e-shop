@@ -32,7 +32,12 @@
 					<tbody>
 						
 						<tr th:each="product : ${allProducts}">
-							<td>[[${product.name}]]</td>
+							<td> 
+								<img th:src="@{${product.mainImagePath}}" 
+									 style="width: 120px" 
+									 class="img-fluid" 
+								/>
+							</td>
 							<td>[[${product.name}]]</td>
 							<td>[[${product.brand.name}]]</td>
 							<td>[[${product.category.name}]]</td>

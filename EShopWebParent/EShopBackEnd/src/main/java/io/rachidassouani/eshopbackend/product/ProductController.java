@@ -4,13 +4,17 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import io.rachidassouani.eshopbackend.brand.BrandService;
+import io.rachidassouani.eshopbackend.util.FileUploadService;
 import io.rachidassouani.eshopcommon.model.Brand;
 import io.rachidassouani.eshopcommon.model.Product;
 import lombok.extern.slf4j.Slf4j;
@@ -54,14 +58,31 @@ public class ProductController {
 	}
 	
 	@PostMapping("save")
-	public String saveProduct(ProductRequest productRequest, RedirectAttributes redirectAttributes) {
+	public String saveProduct(ProductRequest productRequest, 
+			RedirectAttributes redirectAttributes,
+			@RequestParam("fileImage") MultipartFile multipartFile) {
 		
 		log.info("Saving new product");
 		try {
-			productService.save(productRequest);
-			redirectAttributes.addFlashAttribute("successMessage", "The product has been saved successfully.");
 			
-			log.info("Product saved succefully");
+			if (!multipartFile.isEmpty()) {
+				String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+				productRequest.setMainImageName(fileName);
+				
+				// saving product
+				Product savedProduct = productService.save(productRequest);
+				
+				String uploadDirectory = "../productImages/" + savedProduct.getCode();
+				
+				FileUploadService.saveFile(uploadDirectory, fileName, multipartFile);
+				
+				redirectAttributes.addFlashAttribute("successMessage", "The product has been saved successfully.");
+				log.info("Product saved succefully");	
+			
+			} else {
+				productService.save(productRequest);				
+			}		
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

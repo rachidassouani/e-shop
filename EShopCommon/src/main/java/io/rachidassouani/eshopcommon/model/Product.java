@@ -1,7 +1,9 @@
 package io.rachidassouani.eshopcommon.model;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -69,6 +73,23 @@ public class Product {
 	@ManyToOne
 	@JoinColumn(name="brand_id")
 	private Brand brand;
+	
+	@Column(name = "main_image_name", nullable = false)
+	private String mainImageName;
+	
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+	private Set<ProductImage> productImage; 
+	
+	public void addExtraImage(String imageName) {
+		this.productImage.add(new ProductImage(imageName, this));
+	}
+	
+	@Transient
+	public String getMainImagePath() {
+		if (this.code == null || this.mainImageName == null)
+			return "/images/image-thumbnail.png";
+		return "/productImages/" + this.code + "/" + this.mainImageName;
+	}
 	
 	@Override
 	public String toString() {

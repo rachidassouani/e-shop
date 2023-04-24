@@ -13,6 +13,7 @@
 					th:action="@{/products/save}"
 					method="post" 
 					th:object="${productRequest}"
+					enctype="multipart/form-data"
 					onsubmit="return checkProductUniqueness(this)">
 				
 				<!-- hidden ID, in case updating existing product -->
@@ -48,7 +49,9 @@
 						  <div class="tab-pane p-3" id="description" role="tabpanel">
 								<div th:replace="products/productDescription :: content"></div>
 						  </div>
-						  <div class="tab-pane p-3" id="images" role="tabpanel">Images</div>
+						  <div class="tab-pane p-3" id="images" role="tabpanel">
+								<div th:replace="products/productImages :: content"></div>
+						  </div>
 						  <div class="tab-pane p-3" id="details" role="tabpanel">Details</div>
 						  <div class="tab-pane p-3" id="shipping" role="tabpanel">
 						  		<div th:replace="products/productShipping :: content"></div>
@@ -83,6 +86,9 @@
 		</footer>
 		
 		<script>
+		
+			MAX_FILE_SIZE = 502400 // 500kb
+		
 			$(document).ready(function() {
 				$("#buttonCancel").on("click", function() {
 					window.location = "[[@{/products}]]";

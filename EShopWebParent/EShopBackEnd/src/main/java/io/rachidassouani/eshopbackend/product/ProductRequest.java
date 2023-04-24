@@ -28,4 +28,11 @@ public class ProductRequest {
 	private double weight;
 	private String categoryCode;
 	private String brandCode;
+	private String mainImageName;
+	
+	public String getMainImagePath() {
+		if (this.code == null || this.mainImageName == null)
+			return "/images/image-thumbnail.png";
+		return "/productImages/" + this.code + "/" + this.mainImageName;
+	}
 }

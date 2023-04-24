@@ -69,6 +69,7 @@ public class ProductService {
 				.cost(productRequest.getCost())
 				.price(productRequest.getPrice())
 				.discountPercent(productRequest.getDiscountPercent())
+				.mainImageName(productRequest.getMainImageName())
 				.length(productRequest.getLength())
 				.width(productRequest.getWidth())
 				.height(productRequest.getHeight())
