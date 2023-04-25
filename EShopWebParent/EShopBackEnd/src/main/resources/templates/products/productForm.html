@@ -52,7 +52,14 @@
 						  <div class="tab-pane p-3" id="images" role="tabpanel">
 								<div th:replace="products/productImages :: content"></div>
 						  </div>
-						  <div class="tab-pane p-3" id="details" role="tabpanel">Details</div>
+						  <div class="tab-pane p-3" id="details" role="tabpanel">
+								<div th:replace="products/productDetails :: content"></div>
+								<div>
+									<input type="button" value="Add more details"
+											onclick="addMoreDetails()"
+									/>
+								</div>
+						  </div>
 						  <div class="tab-pane p-3" id="shipping" role="tabpanel">
 						  		<div th:replace="products/productShipping :: content"></div>
 						  </div>
@@ -102,6 +109,21 @@
 					findAllCategoriesByBrandCode();
 				});
 				findAllCategoriesByBrandCode();
+				
+				
+				
+				$("#fileImage").change(function() {
+					fileSize = this.files[0].size;
+					if (fileSize > MAX_FILE_SIZE) {
+						this.setCustomValidity("");
+						this.reportValidity("");
+					
+					} else {
+						this.setCustomValidity("");
+						showImageThumbnail(this);	
+					}
+				});
+				
 			});
 			
 			function findAllCategoriesByBrandCode() {
@@ -143,5 +165,6 @@
 		
 		</script>
 		<script th:src="@{/js/commonForm.js}"></script>
+		<script th:src="@{/js/productFormDetail.js}"></script>
 	</body>
 </html>

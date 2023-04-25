@@ -1,7 +1,10 @@
-package io.rachidassouani.eshopbackend.product;
+package io.rachidassouani.eshopcommon.dto;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import io.rachidassouani.eshopcommon.model.ProductDetail;
 import lombok.Builder;
 import lombok.Data;
 
@@ -29,10 +32,21 @@ public class ProductRequest {
 	private String categoryCode;
 	private String brandCode;
 	private String mainImageName;
+	private List<ProductDetail> productDetails;
+	
+	public void addProductDetail(String name, String value) {
+		if (this.productDetails == null) {
+			this.productDetails = new ArrayList<>();
+		}
+		
+		this.productDetails.add(new ProductDetail(name, value));
+	}
 	
 	public String getMainImagePath() {
 		if (this.code == null || this.mainImageName == null)
 			return "/images/image-thumbnail.png";
 		return "/productImages/" + this.code + "/" + this.mainImageName;
 	}
+	
+	
 }

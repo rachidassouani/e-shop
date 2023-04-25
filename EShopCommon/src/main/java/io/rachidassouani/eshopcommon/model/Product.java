@@ -1,6 +1,7 @@
 package io.rachidassouani.eshopcommon.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -90,6 +91,9 @@ public class Product {
 			return "/images/image-thumbnail.png";
 		return "/productImages/" + this.code + "/" + this.mainImageName;
 	}
+
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+	private List<ProductDetail> productDetails;
 	
 	@Override
 	public String toString() {

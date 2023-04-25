@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import io.rachidassouani.eshopbackend.brand.BrandService;
 import io.rachidassouani.eshopbackend.util.FileUploadService;
+import io.rachidassouani.eshopcommon.dto.ProductRequest;
 import io.rachidassouani.eshopcommon.model.Brand;
 import io.rachidassouani.eshopcommon.model.Product;
 import lombok.extern.slf4j.Slf4j;
@@ -60,10 +61,15 @@ public class ProductController {
 	@PostMapping("save")
 	public String saveProduct(ProductRequest productRequest, 
 			RedirectAttributes redirectAttributes,
-			@RequestParam("fileImage") MultipartFile multipartFile) {
+			@RequestParam("fileImage") MultipartFile multipartFile,
+			@RequestParam(name="detailNames", required = false) String[] detailNames,
+			@RequestParam(name="detailValues", required = false) String[] detailValues) {
 		
 		log.info("Saving new product");
 		try {
+			
+			setProductDetails(detailNames, detailValues, productRequest);
+			
 			
 			if (!multipartFile.isEmpty()) {
 				String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
@@ -81,7 +87,9 @@ public class ProductController {
 			
 			} else {
 				productService.save(productRequest);				
-			}		
+			}
+			
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -89,6 +97,20 @@ public class ProductController {
 		return "redirect:/products";
 	}
 	
+	private void setProductDetails(String[] detailNames, String[] detailValues, ProductRequest productRequest) {
+		if (detailNames == null || detailNames.length == 0)
+			return;
+		
+		for(int i = 0; i< detailNames.length; i++) {
+			String detailName = detailNames[i];
+			String detailValue = detailValues[i];
+			
+			if (!detailName.isEmpty() && !detailValue.isEmpty()) {
+				productRequest.addProductDetail(detailName, detailValue);
+			}
+		}
+	}
+
 	@GetMapping("{code}/enabled/{status}")
 	public String enableProductStatusByCode(@PathVariable("code") String code, 
 			@PathVariable("status") boolean status, 

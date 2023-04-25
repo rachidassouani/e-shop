@@ -12,9 +12,24 @@
 							 th:src="@{${productRequest.mainImagePath}}" style="max-height: 350px" width="500" />
 					</div>
 					<div>
-						<input type="file" id="fileImage" name="fileImage" required />
+						<input type="file" id="fileImage" name="fileImage" required 
+							accept="image/png, image/jpeg" />
 					</div>
 				</div>
+				<!-- 
+				<div class="col border m-3 p-2">
+					<div>
+						<label>Extra Image #1: </label>
+					</div>
+					<div>
+						<img id="extraThumbnail" alt="Extra Image #1 Preview" class="img-fuild" 
+							 th:src="@{/images/image-thumbnail.png}" style="max-height: 350px" width="500" />
+					</div>
+					<div>
+						<input type="file" id="extraImage1" name="extraImage1"  
+							accept="image/png, image/jpeg" />
+					</div>
+				</div> -->
 			</div>
 		</div>
 	</body>

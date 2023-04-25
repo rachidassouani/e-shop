@@ -12,9 +12,11 @@ import io.rachidassouani.eshopbackend.category.CategoryNotFoundException;
 import io.rachidassouani.eshopbackend.category.CategoryService;
 import io.rachidassouani.eshopbackend.util.Constant;
 import io.rachidassouani.eshopbackend.util.RandomCodeService;
+import io.rachidassouani.eshopcommon.dto.ProductRequest;
 import io.rachidassouani.eshopcommon.model.Brand;
 import io.rachidassouani.eshopcommon.model.Category;
 import io.rachidassouani.eshopcommon.model.Product;
+import io.rachidassouani.eshopcommon.model.ProductDetail;
 
 @Service
 @Transactional
@@ -55,7 +57,7 @@ public class ProductService {
 		} else {
 			alias = productRequest.getName().trim().replaceAll(" ", "-");
 		}
-
+		
 		Product productToSave = Product.builder()
 				.code(RandomCodeService.generatCode())
 				.name(productRequest.getName())
@@ -74,10 +76,18 @@ public class ProductService {
 				.width(productRequest.getWidth())
 				.height(productRequest.getHeight())
 				.weight(productRequest.getWeight())
+				
+				
 				.createdTime(LocalDateTime.now())
 				.updatedTime(LocalDateTime.now())
 				.build();
 
+		for (ProductDetail pd : productRequest.getProductDetails()) {
+			pd.setProduct(productToSave);
+		}
+		productToSave.setProductDetails(productRequest.getProductDetails());
+		
+		
 		Product savedProduct = productRepository.save(productToSave);
 		return savedProduct;
 	}
