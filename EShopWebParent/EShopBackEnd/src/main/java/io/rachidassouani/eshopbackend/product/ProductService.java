@@ -82,6 +82,7 @@ public class ProductService {
 				.updatedTime(LocalDateTime.now())
 				.build();
 
+		// assign product detail to product model 
 		for (ProductDetail pd : productRequest.getProductDetails()) {
 			pd.setProduct(productToSave);
 		}
@@ -126,5 +127,12 @@ public class ProductService {
 					String.format(Constant.CAN_NOT_DELETE_PRODUCT, code));
 		
 		productRepository.delete(product);
+	}
+
+	public Product findProductByCode(String code) throws ProductNotFoundException {	
+		Product product = productRepository.findProductByCode(code);
+		if (product == null)
+			throw new ProductNotFoundException(Constant.PRODUCT_NOT_FOUND);
+		return product;
 	}
 }

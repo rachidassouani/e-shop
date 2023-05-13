@@ -13,6 +13,9 @@ public class MvcConfig implements WebMvcConfigurer {
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		exposeDirectory("../productImages", registry);
+		exposeDirectory("../siteLogo", registry);
+		exposeDirectory("../../siteLogo", registry);
+		exposeDirectory("./siteLogo", registry);
 	}
 
 	private void exposeDirectory(String pathPattern, ResourceHandlerRegistry registry) {

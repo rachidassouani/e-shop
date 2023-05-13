@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="fragments :: pageHeader('Settings - eShop Admin')" />
+	<body>
+		<div class="container-fluid">
+			<div th:replace="navigation :: navigation"></div>	
+			<div th:replace="modalFragments :: modal_dialog"></div>		
+			<div>
+				<h3>Site Settings</h3>
+			</div>
+				<div th:if="${successMessage != null}" class="alert alert-success txet-center">
+					[[${successMessage}]]
+				</div>
+				<div th:if="${errorMessage != null}" class="alert alert-danger txet-center">
+					[[${errorMessage}]]
+				</div>
+			
+				<div>
+					<!-- Nav tabs -->
+					<ul class="nav nav-tabs" id="settingTab" role="tablist">
+						  <li class="nav-item">
+						    <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general" role="tab">General</a>
+						  </li>
+						  <li class="nav-item">
+						    <a class="nav-link" id="countries-tab" data-toggle="tab" href="#countries" role="tab">countries</a>
+						  </li>
+						  <li class="nav-item">
+						    <a class="nav-link" id="states-tab" data-toggle="tab" href="#states" role="tab">States</a>
+						  </li>
+						  <li class="nav-item">
+						    <a class="nav-link" id="mailServer-tab" data-toggle="tab" href="#mailServer" role="tab">Mail Server</a>
+						  </li>
+						  <li class="nav-item">
+						    <a class="nav-link" id="mailTemplates-tab" data-toggle="tab" href="#mailTemplates" role="tab">Mail Templates</a>
+						  </li>
+					</ul>
+					
+					<!-- Tab panes -->
+					<div class="tab-content">
+						  <div class="tab-pane active p-3" id="general" role="tabpanel">
+						  		<div th:replace="settings/settingsGeneral :: content"></div> 
+						  </div>
+						  <div class="tab-pane p-3" id="countries" role="tabpanel">
+								coun
+						  </div>
+						  <div class="tab-pane p-3" id="states" role="tabpanel">
+								stat
+						  </div>
+						  <div class="tab-pane p-3" id="mailServer" role="tabpanel">
+								mailserv
+						  </div>
+						  <div class="tab-pane p-3" id="mailTemplates" role="tabpanel">
+						  temp		
+						  </div>
+					</div>
+					
+				</div>
+
+			
+		</div>
+		
+		
+		<footer>
+		</footer>
+		
+		<script type="text/javascript">
+			MAX_FILE_SIZE = 502400 // 500kb
+		</script>
+		
+		<script th:src="@{/js/commonForm.js}"></script>
+	</body>
+</html>
